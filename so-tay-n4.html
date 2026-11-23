@@ -1,0 +1,760 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>[hidden]{display:none!important}body{margin:0}img{max-width:100%}</style>
+</head>
+<body>
+<title>Sổ tay N4</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Klee+One:wght@400;600&family=Zen+Kaku+Gothic+New:wght@400;700&display=swap">
+<style>
+/* Layout: sổ tay học — header đếm ngược, thanh tab; lộ trình 32 tuần, mỗi tuần một trang: Irodori · từ vựng · ngữ pháp · bài tập */
+:root{
+  --bg:#f3f5f8; --paper:#ffffff; --ink:#18223a; --muted:#5d6880; --line:#dbe0ea;
+  --ai:#2b4c7e; --ai-soft:#e3eaf5; --shu:#c0442b; --shu-soft:#f8e4df; --matcha:#4f7a3a; --matcha-soft:#e5efdd; --warn:#a66a00;
+  --f-ui:"Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-jp:"Zen Kaku Gothic New", "Hiragino Sans", "Noto Sans JP", "Yu Gothic", sans-serif;
+  --f-brush:"Klee One", "Hiragino Mincho ProN", "Yu Mincho", serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#10141d; --paper:#181e2b; --ink:#e6eaf2; --muted:#9aa4b8; --line:#2b3346;
+  --ai:#8fb0e6; --ai-soft:#1f2b44; --shu:#ec7a62; --shu-soft:#3a201b; --matcha:#97c27c; --matcha-soft:#1f2e1b; --warn:#e0a640; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#10141d; --paper:#181e2b; --ink:#e6eaf2; --muted:#9aa4b8; --line:#2b3346;
+  --ai:#8fb0e6; --ai-soft:#1f2b44; --shu:#ec7a62; --shu-soft:#3a201b; --matcha:#97c27c; --matcha-soft:#1f2e1b; --warn:#e0a640; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-ui);font-size:15px;line-height:1.55}
+.wrap{max-width:960px;margin:0 auto;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-block:20px 48px}
+.jp{font-family:var(--f-jp)}
+h1,h2,h3{text-wrap:balance;margin:0;line-height:1.25}
+h1{font-size:1.5rem;font-weight:700;letter-spacing:-.01em}
+h2{font-size:1.15rem;font-weight:700}
+h3{font-size:.98rem;font-weight:600}
+p{margin:0}
+.muted{color:var(--muted)}
+.small{font-size:.85rem}
+.label{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible,select:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--ai);outline-offset:2px}
+a{color:var(--ai)}
+.row{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:baseline;justify-content:space-between}
+
+header.top{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;justify-content:space-between;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.brand{display:flex;gap:12px;align-items:center}
+.hanko{width:44px;height:44px;border-radius:8px;background:var(--shu);color:#fff;display:grid;place-items:center;font-family:var(--f-brush);font-size:1.25rem;font-weight:600;flex:none}
+.count{text-align:right}
+.count b{font-size:2rem;font-variant-numeric:tabular-nums;color:var(--ai);line-height:1}
+.sync{font-size:.75rem;color:var(--muted)}
+
+nav.tabs{display:flex;gap:4px;overflow-x:auto;margin:14px 0 22px;padding-bottom:2px;scrollbar-width:none}
+nav.tabs a{flex:none;text-decoration:none;color:var(--muted);padding:8px 14px;border-radius:999px;font-weight:500;font-size:.92rem;border:1px solid transparent}
+nav.tabs a .jp{margin-right:6px;font-size:.85rem}
+nav.tabs a[aria-current="page"]{background:var(--ai);color:var(--paper)}
+nav.tabs a:not([aria-current="page"]):hover{border-color:var(--line);color:var(--ink)}
+
+section.view{display:grid;gap:18px}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:18px;min-width:0}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:18px}
+.grid2>*{min-width:0}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+.stat{padding:12px 14px;border-radius:10px;background:var(--ai-soft)}
+.stat b{display:block;font-size:1.45rem;font-variant-numeric:tabular-nums}
+.bar{height:8px;border-radius:99px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ai);border-radius:99px;transition:width .4s}
+
+.phases{display:grid}
+.phase{display:grid;grid-template-columns:22px 1fr;gap:12px;padding-bottom:14px;position:relative}
+.phase:not(:last-child)::before{content:"";position:absolute;left:10px;top:22px;bottom:0;width:2px;background:var(--line)}
+.dot{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);background:var(--paper);display:grid;place-items:center;font-size:.7rem;font-weight:700;color:var(--muted)}
+.phase.done .dot{background:var(--matcha);border-color:var(--matcha);color:var(--paper)}
+.phase.now .dot{border-color:var(--ai);color:var(--ai)}
+.phase.now h3{color:var(--ai)}
+.pill{display:inline-block;font-size:.72rem;font-weight:600;padding:2px 8px;border-radius:99px;background:var(--ai-soft);color:var(--ai);vertical-align:middle;white-space:nowrap}
+.pill.warn{background:transparent;border:1px solid var(--warn);color:var(--warn)}
+.pill.ok{background:var(--matcha-soft);color:var(--matcha)}
+.pill.ghost{background:transparent;border:1px solid var(--line);color:var(--muted)}
+
+.checks{display:grid;gap:8px;margin-top:10px}
+.check{display:flex;gap:12px;align-items:center;text-align:left;width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:transparent}
+.check .box{width:22px;height:22px;border-radius:6px;border:2px solid var(--line);flex:none;display:grid;place-items:center;color:var(--paper);font-size:.8rem}
+.check[aria-pressed="true"]{background:var(--matcha-soft);border-color:transparent}
+.check[aria-pressed="true"] .box{background:var(--matcha);border-color:var(--matcha)}
+.check .t{flex:1;min-width:0}
+.check .min{font-variant-numeric:tabular-nums;color:var(--muted);font-size:.85rem}
+.week7{display:flex;gap:6px;margin-top:12px}
+.week7 span{flex:1;text-align:center;font-size:.7rem;color:var(--muted)}
+.week7 span i{display:block;height:26px;border-radius:6px;background:var(--line);margin-bottom:4px}
+.week7 span i.p1{background:color-mix(in srgb,var(--matcha) 35%,var(--line))}
+.week7 span i.p2{background:color-mix(in srgb,var(--matcha) 70%,var(--line))}
+.week7 span i.p3{background:var(--matcha)}
+
+/* weeks list */
+.wlist{display:grid;gap:6px}
+.wphase{margin-top:14px}
+.wphase:first-child{margin-top:0}
+.wrow{display:grid;grid-template-columns:56px 1fr auto;gap:12px;align-items:center;padding:10px 12px;border-radius:10px;border:1px solid var(--line);text-decoration:none;color:var(--ink);background:var(--paper)}
+.wrow:hover{border-color:var(--ai)}
+.wrow.now{border:2px solid var(--ai)}
+.wrow .wn{font-variant-numeric:tabular-nums;font-weight:700;color:var(--muted);font-size:.85rem;line-height:1.2}
+.wrow .wn b{display:block;font-size:1.2rem;color:var(--ink)}
+.wrow.done .wn b{color:var(--matcha)}
+.wrow .wt{min-width:0}
+.wrow .wt h3{font-size:.95rem}
+.wrow .wt p{font-size:.8rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* week detail */
+.whead{display:grid;gap:10px}
+.wnav{display:flex;gap:8px;justify-content:space-between;flex-wrap:wrap}
+.lchips{display:flex;flex-wrap:wrap;gap:8px}
+.lchip{display:flex;gap:8px;align-items:center;border:1px solid var(--line);border-radius:999px;padding:6px 12px;background:transparent;font-size:.88rem}
+.lchip .box{width:18px;height:18px;border-radius:5px;border:2px solid var(--line);display:grid;place-items:center;color:var(--paper);font-size:.7rem}
+.lchip[aria-pressed="true"]{background:var(--matcha-soft);border-color:transparent}
+.lchip[aria-pressed="true"] .box{background:var(--matcha);border-color:var(--matcha)}
+.vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,200px),1fr));gap:8px}
+.vitem{display:grid;grid-template-columns:1fr auto;gap:2px 8px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:10px;min-width:0}
+.vitem .w{font-family:var(--f-jp);font-weight:700;font-size:1.1rem;min-width:0;overflow-wrap:anywhere}
+.vitem .r{font-family:var(--f-jp);color:var(--ai);font-size:.85rem;grid-column:1}
+.vitem .m{font-size:.85rem;grid-column:1/-1}
+.vitem.known{background:var(--matcha-soft);border-color:transparent}
+.ico{border:1px solid var(--line);background:var(--paper);border-radius:8px;padding:2px 8px;font-size:.85rem;grid-row:1/3;grid-column:2}
+
+.g{border-bottom:1px solid var(--line);padding:12px 0;display:grid;grid-template-columns:28px 1fr;gap:12px}
+.g:last-child{border-bottom:0}
+.g .box{width:24px;height:24px;border-radius:6px;border:2px solid var(--line);background:transparent;display:grid;place-items:center;color:var(--paper);padding:0;font-size:.8rem}
+.g .box[aria-pressed="true"]{background:var(--matcha);border-color:var(--matcha)}
+.g .pat{font-family:var(--f-jp);font-weight:700;font-size:1.05rem}
+.g .ex{font-family:var(--f-jp);margin-top:4px}
+.g .exv{color:var(--muted);font-size:.88rem}
+.g>div{min-width:0}
+.ghead{margin:18px 0 2px}
+.ghead:first-child{margin-top:4px}
+
+/* quiz */
+.quiz{display:grid;gap:14px}
+.q{border:1px solid var(--line);border-radius:10px;padding:14px;display:grid;gap:10px}
+.q .qn{font-size:.72rem;color:var(--muted);font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.q .qt{font-family:var(--f-jp);font-size:1.12rem;line-height:1.7}
+.q .qt .big{font-family:var(--f-brush);font-size:2rem;font-weight:600}
+.blank{display:inline-block;min-width:3.2em;border-bottom:2px solid var(--ai);text-align:center;color:var(--ai);font-weight:700;margin:0 2px}
+.qopts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.qopts button{border:1px solid var(--line);background:var(--paper);border-radius:8px;padding:10px;font-family:var(--f-jp);font-size:1rem;text-align:center;overflow-wrap:anywhere}
+.qopts button:not(:disabled):hover{border-color:var(--ai)}
+.qopts button.right{background:var(--matcha);border-color:var(--matcha);color:var(--paper)}
+.qopts button.wrong{background:var(--shu-soft);border-color:var(--shu);color:var(--shu)}
+.qopts button:disabled{cursor:default}
+.q .fb{font-size:.88rem;color:var(--muted)}
+.score{display:flex;gap:14px;align-items:center;flex-wrap:wrap;padding:14px;border-radius:10px;background:var(--ai-soft)}
+.score b{font-size:1.6rem;font-variant-numeric:tabular-nums}
+
+/* flashcards */
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+select{font:inherit;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:7px 10px;max-width:100%}
+.btn{border:1px solid var(--line);background:var(--paper);padding:8px 14px;border-radius:8px;font-weight:500;text-decoration:none;color:var(--ink);display:inline-block}
+.btn:hover{border-color:var(--ai)}
+.btn.primary{background:var(--ai);color:var(--paper);border-color:var(--ai)}
+.btn.good{background:var(--matcha);color:var(--paper);border-color:var(--matcha)}
+.btn.bad{border-color:var(--shu);color:var(--shu)}
+.card{position:relative;min-height:280px;border-radius:14px;border:1px solid var(--line);display:grid;place-items:center;text-align:center;padding:28px 18px;cursor:pointer;
+  background-color:var(--paper);
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:36px 36px;background-position:center}
+.card .inner{background:var(--paper);padding:14px 22px;border-radius:10px;display:grid;gap:8px;max-width:100%}
+.card .front{font-family:var(--f-brush);font-size:clamp(2.4rem,9vw,3.6rem);line-height:1.15;font-weight:600;word-break:break-all}
+.card .reading{font-family:var(--f-jp);font-size:1.25rem;color:var(--ai)}
+.card .mean{font-size:1.1rem;font-weight:600}
+.card .hint{font-size:.8rem;color:var(--muted)}
+.card .lv{position:absolute;top:10px;left:12px}
+.card .speak{position:absolute;top:8px;right:8px}
+.boxes{display:flex;gap:4px;align-items:center}
+.boxes i{width:10px;height:10px;border-radius:3px;background:var(--line)}
+.boxes i.on{background:var(--matcha)}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.actions .btn{padding:12px}
+
+/* irodori */
+.book{display:grid;gap:10px}
+.lessons{display:grid;grid-template-columns:repeat(9,1fr);gap:6px}
+@media (max-width:520px){.lessons{grid-template-columns:repeat(6,1fr)}}
+.ls{aspect-ratio:1;max-width:100%;border-radius:8px;border:1px solid var(--line);background:transparent;font-variant-numeric:tabular-nums;font-weight:600;font-size:.9rem;display:grid;place-items:center;padding:0}
+.ls[aria-pressed="true"]{background:var(--matcha);border-color:var(--matcha);color:var(--paper)}
+.ls.next{border:2px solid var(--ai);color:var(--ai)}
+
+/* kana */
+.kq{font-family:var(--f-brush);font-size:5rem;font-weight:600;line-height:1}
+.opts{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.opts .btn{padding:14px;font-size:1.05rem;font-weight:600}
+.opts .btn.right{background:var(--matcha);border-color:var(--matcha);color:var(--paper)}
+.opts .btn.wrong{border-color:var(--shu);color:var(--shu)}
+.kana-table{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;font-family:var(--f-jp)}
+.kana-table span{text-align:center;padding:6px 0;border-radius:6px;background:var(--ai-soft)}
+.kana-table span small{display:block;font-family:var(--f-ui);font-size:.68rem;color:var(--muted)}
+.kana-table span.blank2{background:transparent}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+td,th{padding:8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <div class="hanko" aria-hidden="true">合格</div>
+      <div>
+        <h1>Sổ tay N4</h1>
+        <p class="muted small">Irodori + luyện thi JLPT N4 · kỳ thi <span class="jp">2027年7月4日</span></p>
+      </div>
+    </div>
+    <div class="count">
+      <div class="label">Còn lại</div>
+      <div><b id="days">—</b> <span class="muted">ngày</span></div>
+      <div class="sync" id="sync">Đang mở sổ…</div>
+    </div>
+  </header>
+
+  <nav class="tabs" aria-label="Các phần">
+    <a href="#hom-nay"><span class="jp">今日</span>Hôm nay</a>
+    <a href="#lo-trinh"><span class="jp">計画</span>Lộ trình</a>
+    <a href="#the-tu"><span class="jp">単語</span>Thẻ từ</a>
+    <a href="#ngu-phap"><span class="jp">文法</span>Ngữ pháp</a>
+    <a href="#kanji"><span class="jp">漢字</span>Kanji</a>
+    <a href="#irodori"><span class="jp">教科書</span>Irodori</a>
+    <a href="#kana"><span class="jp">かな</span>Kana</a>
+  </nav>
+
+  <!-- HÔM NAY -->
+  <section class="view" id="v-hom-nay">
+    <div class="stats" id="stats"></div>
+    <div class="panel" id="thisWeek"></div>
+    <div class="grid2">
+      <div class="panel">
+        <div class="row"><h2>Việc hôm nay</h2><span class="muted small" id="todayLabel"></span></div>
+        <div class="checks" id="checks"></div>
+        <div class="week7" id="week7" aria-label="7 ngày gần nhất"></div>
+        <p class="muted small" style="margin-top:8px">Một ngày được tính vào chuỗi khi bạn làm xong ít nhất 3 trên 4 việc.</p>
+      </div>
+      <div class="panel">
+        <h2 style="margin-bottom:14px">4 giai đoạn đến ngày thi</h2>
+        <div class="phases" id="phases"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LỘ TRÌNH -->
+  <section class="view" id="v-lo-trinh" hidden>
+    <div id="weeksList" class="view"></div>
+    <div id="weekDetail" class="view" hidden></div>
+  </section>
+
+  <!-- THẺ TỪ -->
+  <section class="view" id="v-the-tu" hidden>
+    <div class="panel" style="display:grid;gap:14px">
+      <div class="toolbar">
+        <label for="deck" class="label">Bộ thẻ</label>
+        <select id="deck"></select>
+        <span class="muted small" id="deckInfo"></span>
+      </div>
+      <div class="card" id="card" role="button" tabindex="0" aria-label="Lật thẻ"></div>
+      <div class="actions">
+        <button class="btn bad" id="no">Chưa nhớ</button>
+        <button class="btn good" id="yes">Nhớ rồi</button>
+      </div>
+      <p class="muted small">Bấm vào thẻ (hoặc phím cách) để lật. Mỗi lần bấm "Nhớ rồi", thẻ lên một hộp. Thẻ ở hộp thấp sẽ hiện lại thường xuyên hơn. Thẻ lên đến hộp 4 được tính là đã thuộc.</p>
+    </div>
+  </section>
+
+  <!-- NGỮ PHÁP -->
+  <section class="view" id="v-ngu-phap" hidden>
+    <div class="panel">
+      <div class="row"><h2>Toàn bộ ngữ pháp trong lộ trình</h2><span class="muted small" id="gInfo"></span></div>
+      <div class="bar" style="margin:10px 0 4px"><i id="gBar"></i></div>
+      <div id="glist"></div>
+    </div>
+  </section>
+
+  <!-- KANJI -->
+  <section class="view" id="v-kanji" hidden>
+    <div class="panel" style="display:grid;gap:14px">
+      <div class="toolbar">
+        <label for="kdeck" class="label">Cấp độ</label>
+        <select id="kdeck"><option value="N5">Kanji N5</option><option value="N4">Kanji N4</option><option value="all">Tất cả</option></select>
+        <span class="muted small" id="kInfo"></span>
+      </div>
+      <div class="card" id="kcard" role="button" tabindex="0" aria-label="Lật thẻ kanji"></div>
+      <div class="actions">
+        <button class="btn bad" id="kno">Chưa nhớ</button>
+        <button class="btn good" id="kyes">Nhớ rồi</button>
+      </div>
+    </div>
+    <div class="panel">
+      <h2>Bảng kanji</h2>
+      <p class="muted small" style="margin:6px 0 10px">Âm Hán Việt là lợi thế lớn của người Việt: nhớ được âm Hán Việt thì đoán nghĩa từ ghép dễ hơn nhiều (ví dụ 学生 là HỌC SINH).</p>
+      <div class="tbl"><table id="ktable"></table></div>
+    </div>
+  </section>
+
+  <!-- IRODORI -->
+  <section class="view" id="v-irodori" hidden>
+    <div class="panel">
+      <h2>Tiến độ giáo trình Irodori</h2>
+      <p class="muted small" style="margin-top:6px">Bấm vào bài để đánh dấu đã học xong. Ô viền xanh là bài tiếp theo. Mục tiêu là học xong cả 3 quyển trước ngày 13/6/2027. Sách và file nghe tải miễn phí tại <a href="https://www.irodori.jpf.go.jp/" target="_blank" rel="noopener">irodori.jpf.go.jp</a>.</p>
+      <div style="margin-top:14px" id="pace"></div>
+    </div>
+    <div id="books" class="view"></div>
+    <div class="panel">
+      <h3>Irodori và đề thi N4</h3>
+      <p class="muted small" style="margin-top:6px">Irodori được soạn theo chuẩn JF/CEFR và tập trung vào giao tiếp. Quyển Nhập môn tương đương khoảng N5, còn Sơ cấp 1 và 2 gần với N4. Đề JLPT kiểm tra ngữ pháp và chữ Hán chặt hơn, vì vậy từ vựng và ngữ pháp trong mỗi tuần của <a href="#lo-trinh">Lộ trình</a> được soạn theo đề JLPT, học song song với sách. Chủ đề từ vựng do Sổ tay tự sắp xếp và có thể không khớp hoàn toàn với từng bài Irodori.</p>
+    </div>
+  </section>
+
+  <!-- KANA -->
+  <section class="view" id="v-kana" hidden>
+    <div class="grid2">
+      <div class="panel" style="display:grid;gap:14px;justify-items:center;text-align:center">
+        <div class="toolbar" style="justify-content:center">
+          <select id="kset" aria-label="Bảng chữ"><option value="h">Hiragana</option><option value="k">Katakana</option><option value="hk">Cả hai</option></select>
+          <span class="muted small" id="kscore"></span>
+        </div>
+        <div class="kq" id="kq"></div>
+        <div class="opts" id="opts" style="width:100%"></div>
+        <p class="muted small">Chọn cách đọc đúng. Đến khi trả lời đúng hơn 95% mà không phải nghĩ thì bạn đã thuộc.</p>
+      </div>
+      <div class="panel">
+        <div class="toolbar" style="justify-content:space-between;margin-bottom:10px"><h2>Bảng chữ</h2>
+          <select id="ktab" aria-label="Bảng hiển thị"><option value="h">ひらがな</option><option value="k">カタカナ</option></select></div>
+        <div class="kana-table" id="kanaTable"></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+"use strict";
+const DAY=86400000;
+const EXAM=new Date(2027,6,4), START=new Date(2026,10,23), LESSON_END=new Date(2027,5,13);
+const PHASES=[
+  {from:new Date(2026,10,23),to:new Date(2027,0,31),w:[1,10],name:"Chắc nền N5",what:"Irodori Nhập môn, từ vựng và ngữ pháp N5, thuộc kana. Tuần 10 làm bài thi thử N5."},
+  {from:new Date(2027,1,1),to:new Date(2027,4,2),w:[11,23],name:"Học kiến thức N4",what:"Irodori Sơ cấp 1, bắt đầu Sơ cấp 2, ngữ pháp N4. Theo dõi lịch đăng ký thi từ tháng 2–3.",flag:"Đăng ký thi"},
+  {from:new Date(2027,4,3),to:new Date(2027,5,13),w:[24,29],name:"Học nốt và ôn theo dạng đề",what:"Học xong Sơ cấp 2 và ngữ pháp N4. Ôn tập, học thêm Soumatome/Shin Kanzen N4."},
+  {from:new Date(2027,5,14),to:new Date(2027,6,4),w:[30,32],name:"Nước rút",what:"Mỗi tuần làm 2–3 đề tổng hợp có bấm giờ, ôn lại câu sai. Không học thêm kiến thức mới."}
+];
+const BOOKS=[{id:"s",name:"Nhập môn",sub:"Starter · A1",jp:"入門"},{id:"e1",name:"Sơ cấp 1",sub:"Elementary 1 · A2",jp:"初級1"},{id:"e2",name:"Sơ cấp 2",sub:"Elementary 2 · A2",jp:"初級2"}];
+const TASKS=[{t:"Ôn thẻ từ của tuần",m:20},{t:"Học bài Irodori",m:40},{t:"Luyện nghe (file nghe Irodori, NHK Easy)",m:20},{t:"Ngữ pháp và bài tập của tuần",m:15}];
+
+// ---------- TỪ VỰNG THEO TUẦN (từ|cách đọc|nghĩa) ----------
+const WV={
+1:["Chào hỏi, giới thiệu bản thân","私|わたし|tôi;名前|なまえ|tên;国|くに|đất nước;日本|にほん|Nhật Bản;学生|がくせい|sinh viên, học sinh;先生|せんせい|giáo viên;会社員|かいしゃいん|nhân viên công ty;仕事|しごと|công việc;趣味|しゅみ|sở thích;何歳|なんさい|bao nhiêu tuổi;友達|ともだち|bạn bè;よろしく|よろしく|rất mong được giúp đỡ"],
+2:["Gia đình và đồ vật","家族|かぞく|gia đình;父|ちち|bố (của mình);母|はは|mẹ (của mình);兄|あに|anh trai (của mình);姉|あね|chị gái (của mình);弟|おとうと|em trai;妹|いもうと|em gái;本|ほん|sách;傘|かさ|cái ô;時計|とけい|đồng hồ;鞄|かばん|cặp, túi;携帯電話|けいたいでんわ|điện thoại di động"],
+3:["Đồ ăn, đồ uống","ご飯|ごはん|cơm, bữa ăn;朝ご飯|あさごはん|bữa sáng;肉|にく|thịt;魚|さかな|cá;野菜|やさい|rau;果物|くだもの|hoa quả;卵|たまご|trứng;パン|パン|bánh mì;お茶|おちゃ|trà;水|みず|nước;牛乳|ぎゅうにゅう|sữa bò;食べる|たべる|ăn;飲む|のむ|uống"],
+4:["Tính từ cơ bản","大きい|おおきい|to, lớn;小さい|ちいさい|nhỏ;新しい|あたらしい|mới;古い|ふるい|cũ;高い|たかい|cao; đắt;安い|やすい|rẻ;広い|ひろい|rộng;おいしい|おいしい|ngon;静か|しずか|yên tĩnh;便利|べんり|tiện lợi;有名|ゆうめい|nổi tiếng;好き|すき|thích"],
+5:["Nhà cửa và vị trí","家|いえ|nhà;部屋|へや|phòng;机|つくえ|cái bàn;椅子|いす|cái ghế;窓|まど|cửa sổ;上|うえ|trên;下|した|dưới;中|なか|trong;前|まえ|trước;後ろ|うしろ|sau, đằng sau;隣|となり|bên cạnh;猫|ねこ|con mèo;犬|いぬ|con chó"],
+6:["Thời gian và số đếm","今日|きょう|hôm nay;明日|あした|ngày mai;昨日|きのう|hôm qua;毎朝|まいあさ|mỗi sáng;午前|ごぜん|buổi sáng (AM);午後|ごご|buổi chiều (PM);今週|こんしゅう|tuần này;来月|らいげつ|tháng sau;去年|きょねん|năm ngoái;半|はん|rưỡi;何時|なんじ|mấy giờ;曜日|ようび|thứ (trong tuần)"],
+7:["Thời tiết và bốn mùa","天気|てんき|thời tiết;雨|あめ|mưa;雪|ゆき|tuyết;春|はる|mùa xuân;夏|なつ|mùa hè;秋|あき|mùa thu;冬|ふゆ|mùa đông;暑い|あつい|nóng (thời tiết);寒い|さむい|lạnh (thời tiết);暖かい|あたたかい|ấm;涼しい|すずしい|mát;速い|はやい|nhanh"],
+8:["Thị trấn và đi lại","駅|えき|nhà ga;銀行|ぎんこう|ngân hàng;病院|びょういん|bệnh viện;図書館|としょかん|thư viện;郵便局|ゆうびんきょく|bưu điện;店|みせ|cửa hàng;公園|こうえん|công viên;デパート|デパート|trung tâm thương mại;電車|でんしゃ|tàu điện;自転車|じてんしゃ|xe đạp;道|みち|con đường;遠い|とおい|xa"],
+9:["Sinh hoạt hằng ngày","起きる|おきる|thức dậy;寝る|ねる|ngủ;働く|はたらく|làm việc;休む|やすむ|nghỉ;勉強する|べんきょうする|học;待つ|まつ|chờ;持つ|もつ|cầm, mang;入る|はいる|vào;出る|でる|ra, rời;教える|おしえる|dạy, chỉ;使う|つかう|sử dụng;作る|つくる|làm, nấu"],
+10:["Ôn N5 · động từ thường gặp","行く|いく|đi;来る|くる|đến;帰る|かえる|về;見る|みる|xem, nhìn;聞く|きく|nghe; hỏi;話す|はなす|nói chuyện;買う|かう|mua;会う|あう|gặp;分かる|わかる|hiểu;撮る|とる|chụp (ảnh);降る|ふる|rơi (mưa, tuyết);吸う|すう|hút"],
+11:["Sức khỏe","体|からだ|cơ thể;頭|あたま|đầu;熱|ねつ|sốt;風邪|かぜ|cảm cúm;薬|くすり|thuốc;病気|びょうき|bệnh;医者|いしゃ|bác sĩ;痛い|いたい|đau;治る|なおる|khỏi bệnh;怪我|けが|vết thương;入院する|にゅういんする|nhập viện;気分|きぶん|cảm giác, tâm trạng"],
+12:["Mua sắm","値段|ねだん|giá cả;財布|さいふ|cái ví;お釣り|おつり|tiền thừa;売り場|うりば|quầy bán hàng;品物|しなもの|hàng hóa;選ぶ|えらぶ|chọn;比べる|くらべる|so sánh;払う|はらう|trả tiền;足りる|たりる|đủ;似合う|にあう|hợp, vừa;試着する|しちゃくする|mặc thử;特別|とくべつ|đặc biệt"],
+13:["Công việc","会議|かいぎ|cuộc họp;社長|しゃちょう|giám đốc;部長|ぶちょう|trưởng phòng;給料|きゅうりょう|tiền lương;説明する|せつめいする|giải thích;相談する|そうだんする|bàn bạc, hỏi ý kiến;準備する|じゅんびする|chuẩn bị;遅れる|おくれる|đến muộn;予定|よてい|kế hoạch, dự định;残業|ざんぎょう|làm thêm giờ;出張|しゅっちょう|đi công tác;辞める|やめる|nghỉ (việc)"],
+14:["Trường học và học tập","授業|じゅぎょう|giờ học;宿題|しゅくだい|bài tập về nhà;試験|しけん|kỳ thi;復習|ふくしゅう|ôn tập;予習|よしゅう|chuẩn bị bài;意味|いみ|ý nghĩa;文法|ぶんぽう|ngữ pháp;発音|はつおん|phát âm;調べる|しらべる|tra cứu;覚える|おぼえる|nhớ, thuộc;忘れる|わすれる|quên;合格する|ごうかくする|thi đỗ"],
+15:["Du lịch","旅行|りょこう|du lịch;空港|くうこう|sân bay;予約する|よやくする|đặt trước;地図|ちず|bản đồ;景色|けしき|phong cảnh;お土産|おみやげ|quà lưu niệm;泊まる|とまる|trọ lại;乗り換える|のりかえる|đổi tàu xe;出発する|しゅっぱつする|xuất phát;到着する|とうちゃくする|đến nơi;珍しい|めずらしい|hiếm;経験|けいけん|kinh nghiệm"],
+16:["Nhà cửa và đồ dùng","引っ越す|ひっこす|chuyển nhà;家賃|やちん|tiền thuê nhà;台所|だいどころ|nhà bếp;冷蔵庫|れいぞうこ|tủ lạnh;壊れる|こわれる|bị hỏng;直す|なおす|sửa;割れる|われる|bị vỡ;捨てる|すてる|vứt;片付ける|かたづける|dọn dẹp;電気|でんき|điện, đèn;つける|つける|bật;消す|けす|tắt"],
+17:["Quan hệ và cảm xúc","招待する|しょうたいする|mời;謝る|あやまる|xin lỗi;褒める|ほめる|khen;叱る|しかる|mắng;優しい|やさしい|hiền, tốt bụng;厳しい|きびしい|nghiêm khắc;恥ずかしい|はずかしい|xấu hổ;嬉しい|うれしい|vui mừng;寂しい|さびしい|cô đơn, buồn;心配する|しんぱいする|lo lắng;約束|やくそく|lời hứa, cuộc hẹn;喧嘩する|けんかする|cãi nhau"],
+18:["Giao thông","交通|こうつう|giao thông;事故|じこ|tai nạn;信号|しんごう|đèn tín hiệu;運転する|うんてんする|lái xe;止まる|とまる|dừng lại;渡る|わたる|băng qua;急ぐ|いそぐ|vội;込む|こむ|đông đúc;危ない|あぶない|nguy hiểm;近く|ちかく|gần, chỗ gần;駐車場|ちゅうしゃじょう|bãi đỗ xe;遅い|おそい|chậm, muộn"],
+19:["Sở thích và giải trí","映画|えいが|phim;音楽|おんがく|âm nhạc;写真|しゃしん|ảnh;釣り|つり|câu cá;登山|とざん|leo núi;踊る|おどる|nhảy múa;歌う|うたう|hát;集める|あつめる|sưu tầm, thu thập;続ける|つづける|tiếp tục;楽しみ|たのしみ|niềm vui, sự mong chờ;興味|きょうみ|hứng thú;試合|しあい|trận đấu"],
+20:["Trạng từ chỉ thời gian, tần suất","週末|しゅうまつ|cuối tuần;最近|さいきん|gần đây;この間|このあいだ|hôm trước;将来|しょうらい|tương lai;昔|むかし|ngày xưa;急に|きゅうに|đột nhiên;必ず|かならず|nhất định;ずっと|ずっと|suốt, mãi;なかなか|なかなか|mãi mà (không);ほとんど|ほとんど|hầu hết;たまに|たまに|thỉnh thoảng;もうすぐ|もうすぐ|sắp sửa"],
+21:["Thiên nhiên","天気予報|てんきよほう|dự báo thời tiết;台風|たいふう|bão;地震|じしん|động đất;空|そら|bầu trời;星|ほし|ngôi sao;海|うみ|biển;島|しま|hòn đảo;森|もり|rừng;晴れる|はれる|trời quang;曇る|くもる|nhiều mây;吹く|ふく|thổi;咲く|さく|nở (hoa)"],
+22:["Thủ tục và dịch vụ","申し込む|もうしこむ|đăng ký;受付|うけつけ|quầy tiếp tân;届ける|とどける|gửi đến, giao;運ぶ|はこぶ|vận chuyển;送る|おくる|gửi;受け取る|うけとる|nhận;書類|しょるい|giấy tờ;住所|じゅうしょ|địa chỉ;連絡する|れんらくする|liên lạc;確認する|かくにんする|xác nhận;番号|ばんごう|số;必要|ひつよう|cần thiết"],
+23:["Tính từ N4","丁寧|ていねい|lịch sự; cẩn thận;複雑|ふくざつ|phức tạp;簡単|かんたん|đơn giản;大切|たいせつ|quan trọng, quý;自由|じゆう|tự do;安全|あんぜん|an toàn;正しい|ただしい|đúng;細かい|こまかい|chi tiết, nhỏ;汚い|きたない|bẩn;深い|ふかい|sâu;柔らかい|やわらかい|mềm;苦い|にがい|đắng"],
+24:["Nấu ăn","料理|りょうり|món ăn; nấu ăn;材料|ざいりょう|nguyên liệu;味|あじ|vị;焼く|やく|nướng;煮る|にる|ninh, nấu;切る|きる|cắt;混ぜる|まぜる|trộn;塩|しお|muối;砂糖|さとう|đường;甘い|あまい|ngọt;辛い|からい|cay;温める|あたためる|hâm nóng"],
+25:["Động từ N4 hay gặp","落とす|おとす|đánh rơi;拾う|ひろう|nhặt;慣れる|なれる|quen;決める|きめる|quyết định;集まる|あつまる|tập trung;起こす|おこす|đánh thức;戻る|もどる|quay lại;探す|さがす|tìm;見つかる|みつかる|được tìm thấy;間に合う|まにあう|kịp;失敗する|しっぱいする|thất bại;成功する|せいこうする|thành công"],
+26:["Kính ngữ và khiêm nhường ngữ","いらっしゃる|いらっしゃる|đi, đến, ở (kính ngữ);おっしゃる|おっしゃる|nói (kính ngữ);召し上がる|めしあがる|ăn, uống (kính ngữ);ご覧になる|ごらんになる|xem (kính ngữ);参る|まいる|đi, đến (khiêm nhường);申す|もうす|nói (khiêm nhường);いただく|いただく|nhận; ăn (khiêm nhường);伺う|うかがう|hỏi, thăm (khiêm nhường);拝見する|はいけんする|xem (khiêm nhường);おる|おる|ở (khiêm nhường);存じる|ぞんじる|biết (khiêm nhường);差し上げる|さしあげる|biếu, tặng"]
+};
+const REVIEW={
+27:["Ôn tập tuần 11–18",[11,18],12],28:["Ôn tập tuần 19–26",[19,26],12],29:["Thi thử giữa kỳ",[1,26],20],
+30:["Đề tổng hợp số 1",[1,26],25],31:["Đề tổng hợp số 2",[1,26],25],32:["Đề tổng hợp số 3 · tuần thi",[1,26],25]
+};
+
+// ---------- NGỮ PHÁP: [tuần, mẫu, nghĩa, câu hỏi (＿＿), đáp án, [nhiễu], dịch, ví dụ?, dịch ví dụ?] ----------
+const GR=[
+[1,"～は～です","A là B","わたしは ベトナム人＿＿。","です",["ます","を","に"],"Tôi là người Việt Nam."],
+[1,"N1の N2","N2 của N1 (sở hữu)","これは わたし＿＿ 本です。","の",["を","に","が"],"Đây là sách của tôi."],
+[1,"～か","câu hỏi có / không","田中さんは 学生です＿＿。","か",["を","で","に"],"Anh Tanaka có phải là sinh viên không?"],
+[2,"どこ・だれ・なん","từ để hỏi: ở đâu, ai, cái gì","すみません、トイレは ＿＿ですか。","どこ",["だれ","なん","いつ"],"Xin lỗi, nhà vệ sinh ở đâu ạ?"],
+[2,"～も","cũng","わたし＿＿ 学生です。","も",["を","へ","で"],"Tôi cũng là sinh viên."],
+[2,"～から～まで","từ… đến…","銀行は 9時＿＿ 3時までです。","から",["まで","に","で"],"Ngân hàng mở từ 9 giờ đến 3 giờ."],
+[3,"Nを Vます","làm gì cái gì (trợ từ を)","毎朝 パン＿＿ 食べます。","を",["に","へ","が"],"Mỗi sáng tôi ăn bánh mì."],
+[3,"(nơi)で Vます","làm gì ở đâu","図書館＿＿ 本を 読みます。","で",["に","を","へ"],"Tôi đọc sách ở thư viện."],
+[3,"(nơi)へ 行きます","đi đến đâu","明日 日本＿＿ 行きます。","へ",["を","で","が"],"Ngày mai tôi đi Nhật."],
+[4,"Tính từ い: ～くないです","phủ định tính từ い","この 部屋は あまり 広く＿＿。","ないです",["です","でした","ありました"],"Căn phòng này không rộng lắm."],
+[4,"～が 好きです","thích cái gì","私は 日本料理＿＿ 好きです。","が",["を","で","に"],"Tôi thích món ăn Nhật."],
+[4,"Tính từ な + N","tính từ な bổ nghĩa cho danh từ","富士山は 有名＿＿ 山です。","な",["の","い","で"],"Núi Phú Sĩ là ngọn núi nổi tiếng."],
+[5,"～が います","có (người, con vật)","机の 上に 猫が ＿＿。","います",["あります","です","します"],"Trên bàn có con mèo."],
+[5,"～が あります","có (đồ vật, cây cối)","公園に 大きい 木が ＿＿。","あります",["います","します","なります"],"Trong công viên có cây to."],
+[5,"(nơi)に ～が あります","ở đâu có cái gì","駅の 前＿＿ 銀行が あります。","に",["を","で","が"],"Trước nhà ga có ngân hàng."],
+[6,"Số + trợ số từ","đếm (つ, 枚, 人, 回…)","りんごを 三＿＿ 買いました。","つ",["人","枚","回"],"Tôi đã mua ba quả táo."],
+[6,"(giờ)に Vます","làm gì lúc mấy giờ","毎朝 7時＿＿ 起きます。","に",["で","を","が"],"Mỗi sáng tôi dậy lúc 7 giờ."],
+[6,"(khoảng thời gian)に ～回","mấy lần trong bao lâu","一週間＿＿ 2回 日本語を 勉強します。","に",["で","を","が"],"Một tuần tôi học tiếng Nhật 2 lần."],
+[7,"～かったです","quá khứ của tính từ い","昨日は とても 寒＿＿。","かったです",["いでした","かったでした","くないでした"],"Hôm qua rất lạnh."],
+[7,"Aより Bの ほうが","B hơn A","バス＿＿ 電車の ほうが 速いです。","より",["から","まで","ほど"],"Tàu điện nhanh hơn xe buýt."],
+[7,"～が いちばん","nhất","一年で 夏が ＿＿ 好きです。","いちばん",["より","ほう","ほど"],"Trong một năm tôi thích mùa hè nhất."],
+[8,"Vたいです","muốn làm","新しい パソコンが 買い＿＿です。","たい",["ます","ない","たく"],"Tôi muốn mua máy tính mới."],
+[8,"Vませんか・Vましょう","rủ rê / cùng làm nhé","「いっしょに 映画を 見ませんか。」「ええ、見＿＿。」","ましょう",["ません","たい","ない"],"Cùng xem phim không? – Ừ, xem đi."],
+[8,"Vに 行きます","đi để làm gì","デパートへ くつを 買い＿＿ 行きます。","に",["を","で","へ"],"Tôi đến trung tâm thương mại để mua giày."],
+[9,"Vてください","hãy làm…","ここに 名前を 書い＿＿ ください。","て",["た","に","で"],"Hãy viết tên vào đây."],
+[9,"Vています","đang làm","今 雨が 降って＿＿。","います",["あります","ください","みます"],"Bây giờ trời đang mưa."],
+[9,"Vても いいですか","làm… có được không","ここで 写真を 撮っても ＿＿ですか。","いい",["いけない","ほしい","ない"],"Tôi chụp ảnh ở đây có được không?"],
+[10,"Vないでください","xin đừng làm","ここで たばこを 吸わ＿＿ ください。","ないで",["なくて","ない","なく"],"Xin đừng hút thuốc ở đây."],
+[10,"～から (lý do)","vì…","時間が ありません＿＿、タクシーで 行きます。","から",["まで","より","のに"],"Vì không có thời gian nên tôi đi taxi."],
+[10,"～とき","khi…","子どもの ＿＿、よく 川で 泳ぎました。","とき",["まえ","あと","ほう"],"Hồi nhỏ tôi hay bơi ở sông."],
+[11,"～たことがある","đã từng làm gì","日本の 映画を 見た＿＿が あります。","こと",["もの","ところ","の"],"Tôi đã từng xem phim Nhật.","日本に行ったことがあります。","Tôi đã từng đi Nhật."],
+[11,"～たり～たりする","lúc thì… lúc thì…, nào là… nào là…","休みの 日は 掃除を したり、買い物を ＿＿ します。","したり",["して","した","するし"],"Ngày nghỉ tôi dọn dẹp, đi mua sắm, v.v.","週末は本を読んだり、映画を見たりします。","Cuối tuần tôi đọc sách, xem phim, v.v."],
+[11,"～てみる","thử làm","この 靴、はいて＿＿も いいですか。","み",["おき","しまい","あり"],"Tôi đi thử đôi giày này được không?","この服を着てみてもいいですか。","Tôi mặc thử bộ đồ này được không?"],
+[12,"～ておく","làm sẵn, làm trước","友達が 来る 前に、飲み物を 買って＿＿。","おきます",["なります","ほしいです","すぎます"],"Trước khi bạn đến, tôi mua sẵn đồ uống.","旅行の前にホテルを予約しておきます。","Trước chuyến đi tôi đặt sẵn khách sạn."],
+[12,"～てしまう","lỡ làm; làm xong hết","電車に 傘を 忘れて＿＿。","しまいました",["おきました","みました","ありました"],"Tôi lỡ để quên ô trên tàu mất rồi.","財布を忘れてしまいました。","Tôi lỡ quên ví mất rồi."],
+[12,"自動詞 + ている","trạng thái còn lại sau hành động","電気が ついて＿＿。","います",["あります","おきます","みます"],"Đèn đang bật.","窓が開いています。","Cửa sổ đang mở."],
+[13,"他動詞 + てある","được ai đó làm sẵn (có chủ ý)","壁に カレンダーが 貼って＿＿。","あります",["います","おきます","しまいます"],"Trên tường có dán sẵn lịch.","机の上に花が飾ってあります。","Trên bàn có hoa được bày sẵn."],
+[13,"Thể khả năng / ～ことができる","có thể làm","私は 泳ぐ ことが ＿＿。","できます",["します","なります","あります"],"Tôi có thể bơi.","私は漢字が少し読めます。","Tôi đọc được một ít kanji."],
+[13,"Thể ý chí + と思う","định làm (ý muốn của bản thân)","週末、京都へ 行＿＿と 思って います。","こう",["く","き","け"],"Cuối tuần tôi đang định đi Kyoto.","来年日本へ行こうと思っています。","Tôi đang định sang năm đi Nhật."],
+[14,"～つもりだ","dự định","来年、日本へ 留学する＿＿です。","つもり",["まで","ほう","ばかり"],"Sang năm tôi định đi du học Nhật.","夏休みに国へ帰るつもりです。","Kỳ nghỉ hè tôi định về nước."],
+[14,"～予定だ","theo kế hoạch, dự kiến","新幹線は 10時に 着く＿＿です。","予定",["つもり","ばかり","こと"],"Tàu Shinkansen dự kiến đến lúc 10 giờ.","会議は3時に始まる予定です。","Cuộc họp dự kiến bắt đầu lúc 3 giờ."],
+[14,"～ば","nếu (điều kiện)","時間が あれ＿＿、手伝います。","ば",["と","たら","て"],"Nếu có thời gian, tôi sẽ giúp.","安ければ、買います。","Nếu rẻ thì tôi mua."],
+[15,"～たら","nếu, sau khi","駅に 着い＿＿、電話して ください。","たら",["ば","と","ても"],"Đến ga rồi thì hãy gọi điện nhé.","雨が降ったら、行きません。","Nếu trời mưa thì tôi không đi."],
+[15,"～と","hễ… thì (kết quả tất yếu)","春に なる＿＿、桜が 咲きます。","と",["ば","たら","ても"],"Hễ đến mùa xuân là hoa anh đào nở.","このボタンを押すと、切符が出ます。","Hễ ấn nút này thì vé sẽ ra."],
+[15,"～なら","nếu là… thì","「京都へ 行きたいんです。」「京都へ 行く＿＿、秋が いいですよ。」","なら",["と","ても","ば"],"Nếu đi Kyoto thì mùa thu là đẹp nhất đấy.","日本語を勉強するなら、この本がいいですよ。","Nếu học tiếng Nhật thì cuốn sách này hay đấy."],
+[16,"～ても","dù… cũng","いくら 考え＿＿、分かりません。","ても",["たら","ば","と"],"Dù nghĩ bao nhiêu cũng không hiểu.","雨が降っても、出かけます。","Dù trời mưa tôi cũng ra ngoài."],
+[16,"～そうだ (dáng vẻ)","trông có vẻ, sắp","空が 暗いですね。雨が 降り＿＿です。","そう",["よう","らしい","はず"],"Trời tối quá. Có vẻ sắp mưa.","このケーキはおいしそうです。","Cái bánh này trông có vẻ ngon."],
+[16,"～そうだ (truyền đạt)","nghe nói","ニュースに よると、来週 台風が 来る＿＿です。","そう",["つもり","ため","こと"],"Theo tin tức, nghe nói tuần sau bão đến.","天気予報によると、明日は雨が降るそうです。","Theo dự báo, nghe nói mai trời mưa."],
+[17,"～ようだ・～みたいだ","hình như, có vẻ như","部屋の 電気が 消えて います。誰も いない＿＿です。","よう",["つもり","ため","ばかり"],"Đèn phòng tắt rồi. Hình như không có ai.","誰か来たようです。","Hình như có ai đó đến."],
+[17,"～らしい","nghe đâu, có vẻ","噂では、あの 店は 来月 閉まる＿＿。","らしいです",["つもりです","ばかりです","ためです"],"Nghe đồn quán đó tháng sau đóng cửa.","田中さんは会社を辞めるらしいです。","Nghe đâu anh Tanaka sẽ nghỉ việc."],
+[17,"～かもしれない","có lẽ, không chừng","明日は 雨が 降る＿＿。","かもしれません",["つもりです","ばかりです","ことです"],"Có lẽ ngày mai trời mưa.","明日は雪が降るかもしれません。","Có lẽ mai tuyết sẽ rơi."],
+[18,"～はずだ","chắc chắn là (theo suy luận)","田中さんは 毎日 練習して いるから、上手な＿＿です。","はず",["そう","ばかり","まで"],"Anh Tanaka luyện tập hằng ngày nên chắc chắn là giỏi.","彼は来るはずです。","Chắc chắn anh ấy sẽ đến."],
+[18,"～ながら","vừa… vừa…","テレビを 見＿＿ ご飯を 食べます。","ながら",["ても","ために","ば"],"Tôi vừa xem tivi vừa ăn cơm.","音楽を聞きながら勉強します。","Tôi vừa nghe nhạc vừa học."],
+[18,"～ために","để (mục đích có chủ ý)","家を 買う＿＿、貯金して います。","ために",["ように","ながら","のに"],"Tôi đang tiết kiệm để mua nhà.","日本で働くために、日本語を勉強しています。","Tôi học tiếng Nhật để làm việc ở Nhật."],
+[19,"～ように","để (đạt trạng thái / khả năng)","風邪を ひかない＿＿、毎日 野菜を 食べます。","ように",["ながら","のに","ばかり"],"Tôi ăn rau mỗi ngày để không bị cảm.","漢字が読めるように、毎日練習します。","Tôi luyện tập mỗi ngày để đọc được kanji."],
+[19,"～ようになる","trở nên (có thể)","練習して、自転車に 乗れる＿＿ なりました。","ように",["ために","ことに","ながら"],"Nhờ luyện tập, tôi đã đi được xe đạp.","日本語が話せるようになりました。","Tôi đã nói được tiếng Nhật rồi."],
+[19,"～ようにする","cố gắng tạo thói quen","毎晩 11時までに 寝る＿＿ して います。","ように",["ために","ながら","ばかり"],"Tôi cố gắng đi ngủ trước 11 giờ mỗi tối.","毎日野菜を食べるようにしています。","Tôi cố gắng ăn rau mỗi ngày."],
+[20,"～ことにする","(tự mình) quyết định","健康の ために、たばこを やめる＿＿ しました。","ことに",["ために","ながら","ばかり"],"Vì sức khỏe, tôi đã quyết định bỏ thuốc lá.","毎朝走ることにしました。","Tôi đã quyết định chạy bộ mỗi sáng."],
+[20,"～ことになる","được quyết định (không do mình)","会社の 決定で、来月 東京へ 引っ越す＿＿ なりました。","ことに",["ために","ながら","ばかり"],"Theo quyết định của công ty, tháng sau tôi chuyển lên Tokyo.","来月大阪に転勤することになりました。","Tháng sau tôi được điều chuyển sang Osaka."],
+[20,"～なければならない","phải làm","薬を 飲ま＿＿ なりません。","なければ",["なくて","ないで","なくても"],"Tôi phải uống thuốc.","明日は早く起きなければなりません。","Ngày mai tôi phải dậy sớm."],
+[21,"～なくても いい","không cần làm cũng được","明日は 休みですから、早く 起き＿＿ いいです。","なくても",["なければ","ながら","ために"],"Mai là ngày nghỉ nên không cần dậy sớm cũng được.","明日は来なくてもいいです。","Ngày mai bạn không cần đến cũng được."],
+[21,"～ては いけない","không được làm","美術館で 写真を 撮って＿＿ いけません。","は",["が","を","に"],"Không được chụp ảnh trong bảo tàng mỹ thuật.","ここでたばこを吸ってはいけません。","Không được hút thuốc ở đây."],
+[21,"Thể bị động","bị, được","私は 先生に 名前を 呼ば＿＿。","れました",["られました","りました","ました"],"Tôi được thầy gọi tên.","先生に褒められました。","Tôi được thầy khen."],
+[22,"Thể sai khiến","bắt / cho phép làm","母は 子どもに 部屋を 掃除＿＿。","させました",["しました","なりました","できました"],"Mẹ bắt con dọn phòng.","母は弟に野菜を食べさせました。","Mẹ bắt em trai ăn rau."],
+[22,"あげる・くれる・もらう","cho, tặng, nhận","誕生日に 姉が 私に 時計を ＿＿。","くれました",["あげました","もらいました","やりました"],"Sinh nhật, chị gái tặng tôi chiếc đồng hồ.","友達が私にプレゼントをくれました。","Bạn tôi đã tặng tôi một món quà."],
+[22,"～てもらう・～てくれる","được ai đó làm giúp","私は 友達に 日本語を 教えて＿＿。","もらいました",["くれました","ありました","おきました"],"Tôi được bạn dạy tiếng Nhật.","友達に宿題を手伝ってもらいました。","Tôi được bạn giúp làm bài tập."],
+[23,"～てほしい","muốn ai đó làm","両親に 長生きして＿＿です。","ほしい",["もらい","あげ","おき"],"Tôi muốn bố mẹ sống thật lâu.","母にずっと元気でいてほしいです。","Tôi muốn mẹ luôn khỏe mạnh."],
+[23,"～すぎる","quá","お酒を 飲み＿＿、頭が 痛いです。","すぎて",["やすくて","にくくて","たくて"],"Uống rượu quá nhiều nên tôi đau đầu.","昨日は食べすぎました。","Hôm qua tôi ăn quá nhiều."],
+[23,"～やすい・～にくい","dễ / khó làm","この ペンは 書き＿＿です。とても 便利です。","やすい",["にくい","ながら","ばかり"],"Cây bút này dễ viết. Rất tiện.","この本は読みやすいです。","Cuốn sách này dễ đọc."],
+[24,"～のに","vậy mà, thế mà","一生懸命 勉強した＿＿、試験に 落ちました。","のに",["ので","から","ために"],"Đã học chăm chỉ vậy mà vẫn trượt.","薬を飲んだのに、まだ熱があります。","Đã uống thuốc rồi mà vẫn còn sốt."],
+[24,"～し、～し","vừa… lại vừa… (liệt kê lý do)","この アパートは 駅から 近い＿＿、家賃も 安いです。","し",["のに","ても","ながら"],"Căn hộ này vừa gần ga, tiền thuê lại rẻ.","この店は安いし、おいしいし、よく来ます。","Quán này vừa rẻ vừa ngon nên tôi hay đến."],
+[24,"～ば～ほど","càng… càng…","日本語は 勉強すれ＿＿ するほど、おもしろく なります。","ば",["と","たら","ても"],"Tiếng Nhật càng học càng thấy thú vị.","練習すればするほど上手になります。","Càng luyện tập càng giỏi."],
+[25,"～かどうか","có… hay không","明日の パーティーに 行ける＿＿、まだ 分かりません。","かどうか",["ために","ように","のに"],"Tôi vẫn chưa biết có đi dự tiệc ngày mai được không.","彼が来るかどうか分かりません。","Tôi không biết anh ấy có đến hay không."],
+[25,"～ところだ","sắp / đang / vừa mới","「もう 昼ご飯を 食べましたか。」「いいえ、今から 食べる＿＿です。」","ところ",["ばかり","はず","まで"],"Ăn trưa chưa? – Chưa, bây giờ tôi sắp ăn.","今から出かけるところです。","Bây giờ tôi sắp ra ngoài."],
+[25,"～たばかりだ","vừa mới","さっき 起きた＿＿なので、まだ 眠いです。","ばかり",["はず","つもり","まで"],"Tôi vừa mới dậy nên vẫn còn buồn ngủ.","日本に来たばかりです。","Tôi vừa mới đến Nhật."],
+[26,"～までに","trước (thời hạn)","来週の 月曜日＿＿ 宿題を 出して ください。","までに",["まで","から","ので"],"Hãy nộp bài tập trước thứ Hai tuần sau.","金曜日までにレポートを出してください。","Hãy nộp báo cáo trước thứ Sáu."],
+[26,"～場合は","trong trường hợp","地震の ＿＿は、エレベーターを 使わないで ください。","場合",["ため","ほう","まで"],"Trong trường hợp động đất, xin đừng dùng thang máy.","遅れる場合は、連絡してください。","Trong trường hợp đến muộn, hãy liên lạc."],
+[26,"Kính ngữ・Khiêm nhường ngữ","nói tôn kính / khiêm tốn","社長は もう お帰りに ＿＿。","なりました",["しました","いたしました","ありました"],"Giám đốc đã về rồi ạ.","私がお荷物をお持ちします。","Để tôi xách hành lý giúp ạ."]
+];
+// [kanji, On, Kun, Hán Việt, nghĩa, level]
+const K=[
+["日","ニチ・ジツ","ひ・か","NHẬT","ngày, mặt trời","N5"],["月","ゲツ・ガツ","つき","NGUYỆT","tháng, mặt trăng","N5"],["火","カ","ひ","HỎA","lửa","N5"],["水","スイ","みず","THỦY","nước","N5"],["木","モク","き","MỘC","cây","N5"],["金","キン","かね","KIM","vàng, tiền","N5"],["土","ド","つち","THỔ","đất","N5"],["山","サン","やま","SƠN","núi","N5"],["川","セン","かわ","XUYÊN","sông","N5"],["人","ジン・ニン","ひと","NHÂN","người","N5"],["大","ダイ・タイ","おお(きい)","ĐẠI","to, lớn","N5"],["小","ショウ","ちい(さい)","TIỂU","nhỏ","N5"],["中","チュウ","なか","TRUNG","giữa, trong","N5"],["上","ジョウ","うえ","THƯỢNG","trên","N5"],["下","カ・ゲ","した","HẠ","dưới","N5"],["学","ガク","まな(ぶ)","HỌC","học","N5"],["生","セイ","い(きる)","SINH","sống, sinh ra","N5"],["先","セン","さき","TIÊN","trước","N5"],["年","ネン","とし","NIÊN","năm","N5"],["時","ジ","とき","THỜI","giờ, lúc","N5"],["何","カ","なに・なん","HÀ","cái gì","N5"],["食","ショク","た(べる)","THỰC","ăn","N5"],["飲","イン","の(む)","ẨM","uống","N5"],["見","ケン","み(る)","KIẾN","nhìn","N5"],["聞","ブン","き(く)","VĂN","nghe","N5"],["読","ドク","よ(む)","ĐỘC","đọc","N5"],["書","ショ","か(く)","THƯ","viết","N5"],["話","ワ","はな(す)","THOẠI","nói chuyện","N5"],["行","コウ","い(く)","HÀNH","đi","N5"],["来","ライ","く(る)","LAI","đến","N5"],["電","デン","—","ĐIỆN","điện","N5"],["車","シャ","くるま","XA","xe","N5"],["東","トウ","ひがし","ĐÔNG","phía đông","N5"],["西","セイ","にし","TÂY","phía tây","N5"],["南","ナン","みなみ","NAM","phía nam","N5"],["北","ホク","きた","BẮC","phía bắc","N5"],
+["会","カイ","あ(う)","HỘI","gặp, hội","N4"],["社","シャ","—","XÃ","công ty, xã hội","N4"],["始","シ","はじ(める)","THỦY","bắt đầu","N4"],["終","シュウ","お(わる)","CHUNG","kết thúc","N4"],["開","カイ","あ(ける)","KHAI","mở","N4"],["閉","ヘイ","し(める)","BẾ","đóng","N4"],["持","ジ","も(つ)","TRÌ","cầm, giữ","N4"],["待","タイ","ま(つ)","ĐÃI","chờ","N4"],["送","ソウ","おく(る)","TỐNG","gửi, tiễn","N4"],["借","シャク","か(りる)","TÁ","mượn","N4"],["貸","タイ","か(す)","THẢI","cho mượn","N4"],["教","キョウ","おし(える)","GIÁO","dạy","N4"],["習","シュウ","なら(う)","TẬP","học, luyện","N4"],["考","コウ","かんが(える)","KHẢO","suy nghĩ","N4"],["思","シ","おも(う)","TƯ","nghĩ","N4"],["知","チ","し(る)","TRI","biết","N4"],["使","シ","つか(う)","SỬ","sử dụng","N4"],["作","サク","つく(る)","TÁC","làm, tạo ra","N4"],["料","リョウ","—","LIỆU","nguyên liệu, phí","N4"],["理","リ","—","LÝ","lý lẽ","N4"],["写","シャ","うつ(す)","TẢ","chép, chụp","N4"],["真","シン","ま","CHÂN","thật","N4"],["旅","リョ","たび","LỮ","du lịch","N4"],["病","ビョウ","やまい","BỆNH","bệnh","N4"],["院","イン","—","VIỆN","viện","N4"],["医","イ","—","Y","y, chữa bệnh","N4"],["者","シャ","もの","GIẢ","người","N4"],["映","エイ","うつ(る)","ÁNH","chiếu","N4"],["画","ガ・カク","—","HỌA","tranh, nét vẽ","N4"],["野","ヤ","の","DÃ","cánh đồng","N4"],["菜","サイ","な","THÁI","rau","N4"],["肉","ニク","—","NHỤC","thịt","N4"],["魚","ギョ","さかな","NGƯ","cá","N4"],["朝","チョウ","あさ","TRIỀU","buổi sáng","N4"],["昼","チュウ","ひる","TRÚ","buổi trưa","N4"],["夜","ヤ","よる","DẠ","ban đêm","N4"],["春","シュン","はる","XUÂN","mùa xuân","N4"],["夏","カ","なつ","HẠ","mùa hè","N4"],["秋","シュウ","あき","THU","mùa thu","N4"],["冬","トウ","ふゆ","ĐÔNG","mùa đông","N4"]
+];
+const KANA_ROWS=[["a","i","u","e","o"],["ka","ki","ku","ke","ko"],["sa","shi","su","se","so"],["ta","chi","tsu","te","to"],["na","ni","nu","ne","no"],["ha","hi","fu","he","ho"],["ma","mi","mu","me","mo"],["ya","","yu","","yo"],["ra","ri","ru","re","ro"],["wa","","","","wo"],["n","","","",""]];
+const HIRA="あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもや ゆ よらりるれろわ   をん    ";
+const KATA="アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤ ユ ヨラリルレロワ   ヲン    ";
+const KANA=[];
+KANA_ROWS.flat().forEach((r,i)=>{if(r){KANA.push({c:HIRA[i],r,s:"h"});KANA.push({c:KATA[i],r,s:"k"});}});
+
+// ---------- BUILD WEEKS ----------
+const GRAM=GR.map((g,i)=>({id:(g[0]<=10?"n5-":"n4-")+i,w:g[0],p:g[1],m:g[2],q:g[3],a:g[4],d:g[5],qvi:g[6],ex:g[7]||g[3].replace("＿＿",g[4]),exv:g[8]||g[6],lv:g[0]<=10?"N5":"N4"}));
+const WEEKS=[];
+for(let n=1;n<=32;n++){
+  const start=new Date(START.getTime()+(n-1)*7*DAY), end=new Date(start.getTime()+6*DAY);
+  let lessons=[];
+  if(n<=9) lessons=["s-"+(2*n-1),"s-"+(2*n)];
+  else if(n>=11&&n<=19) lessons=["e1-"+(2*(n-10)-1),"e1-"+(2*(n-10))];
+  else if(n>=20&&n<=28) lessons=["e2-"+(2*(n-19)-1),"e2-"+(2*(n-19))];
+  const w={n,start,end,lessons,vocab:[],gram:GRAM.filter(g=>g.w===n)};
+  if(WV[n]){w.theme=WV[n][0]; w.vocab=WV[n][1].split(/;(?=\S)/).map(s=>{const [word,r,m]=s.split("|");return {key:"v:"+word,front:word,reading:r,mean:m,lv:n<=10?"N5":"N4",say:r,w:n};});w.kind="learn";}
+  else {w.theme=REVIEW[n][0]; w.range=REVIEW[n][1]; w.qn=REVIEW[n][2]; w.kind=n>=29?"mock":"review";}
+  if(n===10) w.note="Cuối tuần làm 1 đề N5 có bấm giờ (đề mẫu tại jlpt.jp).";
+  if(n===29) w.note="Học xong Irodori. Từ tuần này học thêm Soumatome hoặc Shin Kanzen N4.";
+  if(n>=30) w.note="Mỗi tuần làm thêm 2 đề N4 giấy có bấm giờ: Từ vựng 25 phút, Ngữ pháp và Đọc hiểu 55 phút, Nghe 35 phút.";
+  WEEKS.push(w);
+}
+const ALLV=WEEKS.flatMap(w=>w.vocab);
+const phaseOf=n=>PHASES.findIndex(p=>n>=p.w[0]&&n<=p.w[1]);
+const lessonName=k=>{const [b,i]=k.split("-");const B=BOOKS.find(x=>x.id===b);return B.name+" bài "+i;};
+
+// ---------- STATE ----------
+const LKEY="so-tay-n4-v1";
+const blank=()=>({lessons:{},grammar:{},cards:{},daily:{},kana:{right:0,total:0},ex:{}});
+let state=blank();
+function migrate(s){const o=Object.assign(blank(),s);const g={};Object.keys(o.grammar||{}).forEach(k=>{if(!/^\d+$/.test(k))g[k]=o.grammar[k];});o.grammar=g;if(!o.ex)o.ex={};return o;}
+try{const s=localStorage.getItem(LKEY);if(s)state=migrate(JSON.parse(s));}catch(e){}
+let docRef=null,writing=false,again=false,tmr=null;
+const syncEl=document.getElementById("sync");
+const setSync=t=>{syncEl.textContent=t;};
+function save(){try{localStorage.setItem(LKEY,JSON.stringify(state));}catch(e){}clearTimeout(tmr);tmr=setTimeout(flush,1200);}
+async function flush(){
+  if(!docRef)return; if(writing){again=true;return;} writing=true;
+  try{await docRef.set({json:JSON.stringify(state),updatedAt:Date.now()});setSync("Đã lưu vào tài khoản");}
+  catch(e){setSync("Chưa lưu được lên tài khoản, đã lưu trên máy này");}
+  writing=false; if(again){again=false;flush();}
+}
+(async function connect(){
+  if(!window.claude||!window.claude.use){setSync("Lưu trên trình duyệt này");return;}
+  const timer=setTimeout(()=>{if(!docRef)setSync("Lưu trên trình duyệt này");},10000);
+  try{
+    const [db,user]=await Promise.all([window.claude.use("db"),window.claude.use("user")]);
+    if(!db||!user){clearTimeout(timer);setSync("Lưu trên trình duyệt này");return;}
+    const id=await user.id(); if(!id){clearTimeout(timer);setSync("Lưu trên trình duyệt này");return;}
+    const ref=db.collection("data/users/"+id).doc("progress");
+    const snap=await ref.get(); clearTimeout(timer); docRef=ref;
+    const d=snap.exists?snap.data():null;
+    if(d&&typeof d.json==="string"){try{state=migrate(JSON.parse(d.json));try{localStorage.setItem(LKEY,JSON.stringify(state));}catch(e){}}catch(e){} rerender(); setSync("Đã đồng bộ với tài khoản");}
+    else{setSync("Tiến độ sẽ lưu vào tài khoản của bạn"); if(Object.keys(state.lessons).length||Object.keys(state.daily).length||Object.keys(state.cards).length)flush();}
+  }catch(e){clearTimeout(timer);setSync("Lưu trên trình duyệt này");}
+})();
+
+// ---------- HELPERS ----------
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const dayKey=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+const fmt=d=>d.getDate()+"/"+(d.getMonth()+1);
+const today=()=>{const d=new Date();d.setHours(0,0,0,0);return d;};
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const curWeekN=()=>{const t=today();if(t<START)return 1;const n=Math.floor((t-START)/(7*DAY))+1;return Math.min(32,n);};
+const lessonsDone=()=>BOOKS.reduce((n,b)=>{for(let i=1;i<=18;i++)if(state.lessons[b.id+"-"+i])n++;return n;},0);
+const expectedLessons=()=>{const c=curWeekN();return WEEKS.filter(w=>w.n<c).reduce((s,w)=>s+w.lessons.length,0);};
+const dailyCount=k=>(state.daily[k]||[]).filter(Boolean).length;
+function streak(){let d=today(),n=0;if(dailyCount(dayKey(d))<3)d=new Date(d-DAY);while(dailyCount(dayKey(d))>=3){n++;d=new Date(d-DAY);}return n;}
+const known=k=>(state.cards[k]||0)>=4;
+function weekStatus(w){
+  const best=state.ex[w.n];
+  const lessonsOk=w.lessons.every(k=>state.lessons[k]);
+  if(best!=null&&best>=80&&lessonsOk)return "done";
+  if(w.n===curWeekN())return "now";
+  return w.n<curWeekN()?"late":"future";
+}
+let ttsP=null;
+async function speak(text){
+  try{if(!ttsP)ttsP=(window.claude&&window.claude.use)?window.claude.use("tts"):Promise.resolve(null);const t=await ttsP;if(t){await t.speak(text,{language:"ja"});return;}}catch(e){}
+  try{const u=new SpeechSynthesisUtterance(text);u.lang="ja-JP";speechSynthesis.cancel();speechSynthesis.speak(u);}catch(e){}
+}
+document.addEventListener("click",e=>{const s=e.target.closest("[data-say]");if(s&&!s.closest(".card")){e.preventDefault();speak(s.dataset.say);}});
+
+// ---------- TODAY ----------
+function renderToday(){
+  const t=today();
+  $("days").textContent=Math.max(0,Math.round((EXAM-t)/DAY));
+  const gDone=GRAM.filter(g=>state.grammar[g.id]).length;
+  const learned=Object.keys(state.cards).filter(k=>state.cards[k]>=4).length;
+  const doneWeeks=WEEKS.filter(w=>weekStatus(w)==="done").length;
+  $("stats").innerHTML=[["Tuần đã hoàn thành",doneWeeks+"<span class='muted small'> / 32</span>"],["Bài Irodori",lessonsDone()+"<span class='muted small'> / 54</span>"],["Ngữ pháp đã nắm",gDone+"<span class='muted small'> / "+GRAM.length+"</span>"],["Thẻ đã thuộc",learned+"<span class='muted small'> / "+(ALLV.length+K.length)+"</span>"],["Chuỗi ngày học",streak()+"<span class='muted small'> ngày</span>"]]
+    .map(([l,v])=>`<div class="stat"><span class="label">${l}</span><b>${v}</b></div>`).join("");
+  const w=WEEKS[curWeekN()-1];
+  const best=state.ex[w.n];
+  $("thisWeek").innerHTML=`<div class="row"><div><span class="label">Tuần này · tuần ${w.n}/32 · ${fmt(w.start)}–${fmt(w.end)}</span><h2 style="margin-top:2px">${esc(w.theme)}</h2></div>
+    <a class="btn primary" href="#tuan-${w.n}">Mở tuần ${w.n}</a></div>
+    <div class="lchips" style="margin-top:12px">
+      ${w.lessons.map(k=>`<span class="pill ${state.lessons[k]?"ok":"ghost"}">Irodori ${lessonName(k)}${state.lessons[k]?" ✓":""}</span>`).join("")}
+      ${w.vocab.length?`<span class="pill ghost">${w.vocab.filter(v=>known(v.key)).length}/${w.vocab.length} từ đã thuộc</span>`:""}
+      ${w.gram.length?`<span class="pill ghost">${w.gram.length} mẫu ngữ pháp</span>`:""}
+      <span class="pill ${best>=80?"ok":best!=null?"warn":"ghost"}">Bài tập: ${best!=null?best+"%":"chưa làm"}</span>
+    </div>`;
+  const k=dayKey(t),arr=state.daily[k]||[];
+  $("todayLabel").textContent=["Chủ nhật","Thứ Hai","Thứ Ba","Thứ Tư","Thứ Năm","Thứ Sáu","Thứ Bảy"][t.getDay()]+", "+fmt(t);
+  $("checks").innerHTML=TASKS.map((x,i)=>`<button class="check" data-i="${i}" aria-pressed="${!!arr[i]}"><span class="box">${arr[i]?"✓":""}</span><span class="t">${x.t}</span><span class="min">${x.m}′</span></button>`).join("");
+  let h="";for(let i=6;i>=0;i--){const d=new Date(t-i*DAY),c=dailyCount(dayKey(d)),p=c>=4?3:c>=3?2:c>=1?1:0;h+=`<span title="${fmt(d)}: ${c}/4"><i class="${p?"p"+p:""}"></i>${["CN","T2","T3","T4","T5","T6","T7"][d.getDay()]}</span>`;}
+  $("week7").innerHTML=h;
+  $("phases").innerHTML=PHASES.map((p,i)=>{const st=t>p.to?"done":(t>=p.from?"now":"");
+    return `<div class="phase ${st}"><div class="dot">${st==="done"?"✓":i+1}</div><div><h3>${p.name} ${st==="now"?'<span class="pill">Đang ở đây</span>':""} ${p.flag&&st!=="done"?'<span class="pill warn">'+p.flag+"</span>":""}</h3><p class="small muted">Tuần ${p.w[0]}–${p.w[1]} · ${fmt(p.from)} – ${fmt(p.to)} · ${p.what}</p></div></div>`;}).join("");
+}
+$("checks").addEventListener("click",e=>{const b=e.target.closest(".check");if(!b)return;const k=dayKey(today()),arr=(state.daily[k]||[false,false,false,false]).slice();arr[+b.dataset.i]=!arr[+b.dataset.i];state.daily[k]=arr;save();renderToday();});
+
+// ---------- LỘ TRÌNH ----------
+function renderWeeks(){
+  const cw=curWeekN();
+  $("weeksList").innerHTML=`<div class="panel"><div class="row"><h2>Lộ trình 32 tuần</h2><span class="muted small">Một tuần được tính là xong khi học xong bài Irodori của tuần và làm bài tập đạt từ 80%.</span></div></div>`+
+  PHASES.map((p,pi)=>`<div class="panel wphase"><div class="row" style="margin-bottom:10px"><h3>Giai đoạn ${pi+1} · ${p.name}</h3><span class="muted small">${fmt(p.from)} – ${fmt(p.to)}</span></div><div class="wlist">`+
+    WEEKS.filter(w=>w.n>=p.w[0]&&w.n<=p.w[1]).map(w=>{
+      const st=weekStatus(w),best=state.ex[w.n];
+      const sub=[w.lessons.length?"Irodori "+lessonName(w.lessons[0])+"–"+w.lessons[1].split("-")[1]:"",w.vocab.length?w.vocab.length+" từ":"",w.gram.length?w.gram.length+" ngữ pháp":"",w.kind!=="learn"?w.qn+" câu tổng hợp":""].filter(Boolean).join(" · ");
+      const pill=st==="done"?'<span class="pill ok">Xong · '+best+'%</span>':st==="now"?'<span class="pill">Tuần này</span>':best!=null?'<span class="pill warn">'+best+'%</span>':st==="late"?'<span class="pill ghost">Chưa xong</span>':"";
+      return `<a class="wrow ${st==="done"?"done":""} ${w.n===cw?"now":""}" href="#tuan-${w.n}"><div class="wn"><b>${w.n}</b>${fmt(w.start)}</div><div class="wt"><h3>${esc(w.theme)}</h3><p>${sub}</p></div>${pill}</a>`;
+    }).join("")+`</div></div>`).join("");
+}
+let quiz=null;
+function vocabPool(w){return w.kind==="learn"?w.vocab:ALLV.filter(v=>v.w>=w.range[0]&&v.w<=w.range[1]);}
+function gramPool(w){return w.kind==="learn"?w.gram:GRAM.filter(g=>g.w>=w.range[0]&&g.w<=w.range[1]);}
+function buildQuiz(w){
+  const vp=vocabPool(w),gp=gramPool(w),qs=[];
+  let nM,nR,nG;
+  if(w.kind==="learn"){nM=5;nR=4;nG=gp.length;}else{nG=Math.round(w.qn*0.4);nM=Math.round(w.qn*0.35);nR=w.qn-nG-nM;}
+  const allMeans=[...new Set(vp.map(v=>v.mean))];
+  shuffle(vp).slice(0,nM).forEach(v=>{
+    const d=shuffle(allMeans.filter(m=>m!==v.mean)).slice(0,3);
+    qs.push({type:"Nghĩa của từ",html:`<span class="big">${esc(v.front)}</span>`,a:v.mean,opts:shuffle([v.mean,...d]),fb:`${v.front}（${v.reading}）: ${v.mean}`,ui:true});
+  });
+  const kv=vp.filter(v=>v.front!==v.reading);
+  const allR=[...new Set(kv.map(v=>v.reading))];
+  shuffle(kv).slice(0,nR).forEach(v=>{
+    const d=shuffle(allR.filter(r=>r!==v.reading)).slice(0,3);
+    qs.push({type:"Cách đọc",html:`<span class="big">${esc(v.front)}</span>`,a:v.reading,opts:shuffle([v.reading,...d]),fb:`${v.front}（${v.reading}）: ${v.mean}`});
+  });
+  shuffle(gp).slice(0,nG).forEach(g=>{
+    qs.push({type:"Ngữ pháp · chọn từ điền vào chỗ trống",html:esc(g.q).replace("＿＿",'<span class="blank">？</span>'),a:g.a,opts:shuffle([g.a,...g.d]),fb:`${g.p} (${g.m}). ${g.qvi}`,gq:g});
+  });
+  return {w:w.n,qs:w.kind==="learn"?qs:shuffle(qs),ans:{}};
+}
+function renderWeek(n){
+  const w=WEEKS[n-1];
+  if(!quiz||quiz.w!==n)quiz=buildQuiz(w);
+  const prev=n>1?`<a class="btn" href="#tuan-${n-1}">← Tuần ${n-1}</a>`:"<span></span>";
+  const next=n<32?`<a class="btn" href="#tuan-${n+1}">Tuần ${n+1} →</a>`:"<span></span>";
+  let h=`<div class="wnav"><a class="btn" href="#lo-trinh">Tất cả các tuần</a><div style="display:flex;gap:8px">${prev}${next}</div></div>`;
+  h+=`<div class="panel whead"><span class="label">Tuần ${n}/32 · ${fmt(w.start)} – ${fmt(w.end)} · Giai đoạn ${phaseOf(n)+1}</span><h2 style="font-size:1.4rem">${esc(w.theme)}</h2>${w.note?`<p class="small muted">${esc(w.note)}</p>`:""}
+    ${w.lessons.length?`<div><span class="label">1 · Irodori tuần này</span><div class="lchips" style="margin-top:6px">${w.lessons.map(k=>`<button class="lchip" data-lesson="${k}" aria-pressed="${!!state.lessons[k]}"><span class="box">${state.lessons[k]?"✓":""}</span>${lessonName(k)}</button>`).join("")}</div></div>`:`<p class="small"><span class="pill ghost">Tuần ôn tập</span> Tuần này không có bài Irodori mới.</p>`}</div>`;
+  if(w.vocab.length){
+    const kn=w.vocab.filter(v=>known(v.key)).length;
+    h+=`<div class="panel"><div class="row" style="margin-bottom:12px"><h2>2 · Từ vựng <span class="muted small" style="font-weight:400">${kn}/${w.vocab.length} đã thuộc</span></h2><a class="btn primary" href="#the-tu" data-deck="w:${n}">Học bằng thẻ</a></div>
+    <div class="vgrid">${w.vocab.map(v=>`<div class="vitem ${known(v.key)?"known":""}"><span class="w">${esc(v.front)}</span><button class="ico" data-say="${esc(v.say)}" aria-label="Nghe ${esc(v.front)}">🔊</button>${v.front!==v.reading?`<span class="r">${esc(v.reading)}</span>`:""}<span class="m">${esc(v.mean)}</span></div>`).join("")}</div></div>`;
+  }
+  if(w.gram.length){
+    h+=`<div class="panel"><h2 style="margin-bottom:4px">3 · Ngữ pháp</h2><p class="muted small">Đọc ví dụ, bấm 🔊 để nghe, rồi tự đặt 2 câu của riêng bạn. Tích vào ô khi đã nắm được mẫu.</p>${w.gram.map(gramRow).join("")}</div>`;
+  }
+  const total=quiz.qs.length,answered=Object.keys(quiz.ans).length,right=Object.values(quiz.ans).filter(Boolean).length;
+  const best=state.ex[n];
+  h+=`<div class="panel quiz"><div class="row"><h2>${w.kind==="learn"?"4 · Bài tập":"Bài tập tổng hợp"} <span class="muted small" style="font-weight:400">${total} câu</span></h2><span class="small">${best!=null?"Điểm cao nhất: <b>"+best+"%</b>":"Chưa làm"}</span></div>`;
+  h+=quiz.qs.map((q,i)=>{
+    const a=quiz.ans[i];const done=a!==undefined;
+    return `<div class="q"><span class="qn">Câu ${i+1} · ${q.type}</span><div class="qt">${q.html}</div><div class="qopts">${q.opts.map(o=>{let c="";if(done){if(o===q.a)c="right";else if(o===q.picked&&!a)c="wrong";}
+      return `<button data-q="${i}" data-o="${esc(o)}" class="${c}" ${done?"disabled":""}${q.ui?' style="font-family:var(--f-ui)"':""}>${esc(o)}</button>`;}).join("")}</div>${done?`<div class="fb">${a?"✓ Đúng.":"✗ Đáp án đúng: <b class='jp'>"+esc(q.a)+"</b>."} ${esc(q.fb)}</div>`:""}</div>`;
+  }).join("");
+  if(answered===total){const pct=Math.round(right/total*100);
+    h+=`<div class="score"><b>${pct}%</b><div style="flex:1;min-width:180px"><p><b>${right}/${total}</b> câu đúng. ${pct>=80?"Bạn đã đạt yêu cầu của tuần này.":"Cần đạt từ 80%. Hãy ôn lại phần sai rồi làm lại."}</p></div><button class="btn primary" id="retry">Làm lại với câu mới</button></div>`;}
+  else h+=`<p class="muted small">Đã làm ${answered}/${total} câu.</p>`;
+  h+=`</div>`;
+  $("weekDetail").innerHTML=h;
+}
+function gramRow(g){return `<div class="g"><button class="box" data-g="${g.id}" aria-pressed="${!!state.grammar[g.id]}" aria-label="Đánh dấu đã nắm ${esc(g.p)}">${state.grammar[g.id]?"✓":""}</button>
+  <div><div class="pat">${esc(g.p)} <span style="font-family:var(--f-ui);font-weight:500;font-size:.9rem" class="muted">· ${esc(g.m)}</span></div>
+  <div class="ex">${esc(g.ex)} <button class="btn" data-say="${esc(g.ex)}" style="padding:2px 8px;font-size:.8rem" aria-label="Nghe câu ví dụ">🔊</button></div><div class="exv">${esc(g.exv)}</div></div></div>`;}
+$("weekDetail").addEventListener("click",e=>{
+  const l=e.target.closest("[data-lesson]");if(l){const k=l.dataset.lesson;if(state.lessons[k])delete state.lessons[k];else state.lessons[k]=true;save();renderWeek(quiz.w);return;}
+  const g=e.target.closest("[data-g]");if(g){toggleG(g.dataset.g);renderWeek(quiz.w);return;}
+  const d=e.target.closest("[data-deck]");if(d){pendingDeck=d.dataset.deck;return;}
+  if(e.target.id==="retry"){quiz=buildQuiz(WEEKS[quiz.w-1]);renderWeek(quiz.w);return;}
+  const b=e.target.closest("[data-q]");if(!b||b.disabled)return;
+  const i=+b.dataset.q,q=quiz.qs[i];if(quiz.ans[i]!==undefined)return;
+  q.picked=b.dataset.o;quiz.ans[i]=q.picked===q.a;
+  if(quiz.ans[i]&&!q.ui)speak(q.gq?q.gq.q.replace("＿＿",q.a):q.a);
+  if(Object.keys(quiz.ans).length===quiz.qs.length){const pct=Math.round(Object.values(quiz.ans).filter(Boolean).length/quiz.qs.length*100);if(state.ex[quiz.w]==null||pct>state.ex[quiz.w]){state.ex[quiz.w]=pct;save();}}
+  const y=window.scrollY;renderWeek(quiz.w);window.scrollTo(0,y);
+});
+function toggleG(id){if(state.grammar[id])delete state.grammar[id];else state.grammar[id]=true;save();}
+
+// ---------- FLASHCARDS ----------
+let pendingDeck=null;
+function makeDeck(kind){
+  if(kind==="cur")return ALLV.filter(v=>v.w===Math.min(curWeekN(),26));
+  if(kind==="upto")return ALLV.filter(v=>v.w<=curWeekN());
+  if(kind==="N5"||kind==="N4")return ALLV.filter(v=>v.lv===kind);
+  if(kind.startsWith("w:"))return ALLV.filter(v=>v.w===+kind.slice(2));
+  if(kind==="all")return ALLV;
+  return [];
+}
+function makeKDeck(kind){return K.filter(k=>kind==="all"||k[5]===kind).map(k=>({key:"k:"+k[0],front:k[0],reading:"On: "+k[1]+"　Kun: "+k[2],mean:k[3]+" · "+k[4],lv:k[5],say:k[2]!=="—"?k[2].replace(/[()]/g,"").split("・")[0]:k[1].split("・")[0]}));}
+function pick(deck,prev){const s=deck.filter(c=>c.key!==prev).map(c=>({c,w:Math.pow(0.35,state.cards[c.key]||0)*Math.random()}));s.sort((a,b)=>b.w-a.w);return (s[0]||{c:deck[0]}).c;}
+function Trainer(cardEl,infoEl,yesBtn,noBtn,getDeck){
+  let cur=null,flipped=false;
+  function info(){const d=getDeck();infoEl.textContent=`${d.length} thẻ · đã thuộc ${d.filter(c=>known(c.key)).length}`;}
+  function draw(){const d=getDeck();cur=d.length?pick(d,cur&&cur.key):null;flipped=false;render();info();}
+  function render(){
+    if(!cur){cardEl.innerHTML='<div class="inner"><div class="hint">Bộ thẻ này chưa có từ.</div></div>';return;}
+    const box=state.cards[cur.key]||0;
+    cardEl.innerHTML=`<span class="pill lv">${cur.lv}${cur.w?" · tuần "+cur.w:""}</span><button class="btn speak" data-say="${esc(cur.say)}" aria-label="Nghe phát âm">🔊</button>
+      <div class="inner"><div class="front">${esc(cur.front)}</div>${flipped?`${cur.reading!==cur.front?`<div class="reading">${esc(cur.reading)}</div>`:""}<div class="mean">${esc(cur.mean)}</div>`:`<div class="hint">Bấm để xem cách đọc và nghĩa</div>`}
+      <div class="boxes" style="justify-content:center" aria-label="Hộp ${box}/4">${[1,2,3,4].map(x=>`<i class="${box>=x?"on":""}"></i>`).join("")}</div></div>`;
+  }
+  cardEl.addEventListener("click",e=>{const s=e.target.closest("[data-say]");if(s){e.stopPropagation();speak(s.dataset.say);return;}if(!cur)return;flipped=!flipped;render();});
+  cardEl.addEventListener("keydown",e=>{if((e.key===" "||e.key==="Enter")&&cur){e.preventDefault();flipped=!flipped;render();}});
+  yesBtn.addEventListener("click",()=>{if(!cur)return;state.cards[cur.key]=Math.min(5,(state.cards[cur.key]||0)+1);save();draw();});
+  noBtn.addEventListener("click",()=>{if(!cur)return;state.cards[cur.key]=0;save();draw();});
+  return {draw,info};
+}
+const deckSel=$("deck");
+deckSel.innerHTML=`<option value="cur">Từ của tuần này</option><option value="upto">Tất cả từ đến tuần này</option><option value="N5">Toàn bộ N5 (tuần 1–10)</option><option value="N4">Toàn bộ N4 (tuần 11–26)</option><option value="all">Tất cả</option>`+
+  Object.keys(WV).map(n=>`<option value="w:${n}">Tuần ${n}: ${esc(WV[n][0])}</option>`).join("");
+const vT=Trainer($("card"),$("deckInfo"),$("yes"),$("no"),()=>makeDeck(deckSel.value));
+deckSel.addEventListener("change",()=>vT.draw());
+const kT=Trainer($("kcard"),$("kInfo"),$("kyes"),$("kno"),()=>makeKDeck($("kdeck").value));
+$("kdeck").addEventListener("change",()=>kT.draw());
+$("ktable").innerHTML=`<thead><tr><th>Chữ</th><th>Hán Việt</th><th>Nghĩa</th><th>On</th><th>Kun</th><th>Cấp</th></tr></thead><tbody>`+K.map(k=>`<tr><td class="jp" style="font-size:1.3rem">${k[0]}</td><td><b>${k[3]}</b></td><td>${k[4]}</td><td class="jp">${k[1]}</td><td class="jp">${k[2]}</td><td>${k[5]}</td></tr>`).join("")+`</tbody>`;
+
+// ---------- NGỮ PHÁP (tổng) ----------
+function renderGrammar(){
+  const n=GRAM.filter(g=>state.grammar[g.id]).length;
+  $("gInfo").textContent=`Đã nắm ${n}/${GRAM.length} mẫu`;
+  $("gBar").style.width=(n/GRAM.length*100)+"%";
+  let h="",last=0;
+  GRAM.forEach(g=>{if(g.w!==last){last=g.w;h+=`<div class="ghead row"><h3>Tuần ${g.w} · ${g.lv}</h3><a class="small" href="#tuan-${g.w}">Mở tuần ${g.w}</a></div>`;}h+=gramRow(g);});
+  $("glist").innerHTML=h;
+}
+$("glist").addEventListener("click",e=>{const b=e.target.closest("[data-g]");if(!b)return;toggleG(b.dataset.g);renderGrammar();});
+
+// ---------- IRODORI ----------
+function nextLesson(){for(const b of BOOKS)for(let i=1;i<=18;i++)if(!state.lessons[b.id+"-"+i])return {book:b,n:i};return null;}
+function renderIrodori(){
+  const nx=nextLesson();
+  $("books").innerHTML=BOOKS.map(b=>{let c=0,cells="";for(let i=1;i<=18;i++){const on=!!state.lessons[b.id+"-"+i];if(on)c++;const isN=nx&&nx.book.id===b.id&&nx.n===i;
+      cells+=`<button class="ls${isN?" next":""}" data-k="${b.id}-${i}" aria-pressed="${on}" aria-label="${b.name} bài ${i}">${i}</button>`;}
+    return `<div class="panel book"><div class="row"><div><h2>${b.name} <span class="jp muted" style="font-weight:400">${b.jp}</span></h2><span class="muted small">${b.sub}</span></div><span class="small"><b>${c}</b>/18 bài</span></div><div class="bar"><i style="width:${c/18*100}%"></i></div><div class="lessons">${cells}</div></div>`;}).join("");
+  const done=lessonsDone(),exp=expectedLessons(),diff=done-exp;
+  $("pace").innerHTML=`<div class="row small" style="margin-bottom:6px"><span>Đã học <b>${done}</b>/54 bài</span><span>Theo lộ trình nên xong ~${exp} bài trước tuần này ${diff>=0?'<span class="pill ok">Đúng tiến độ</span>':'<span class="pill warn">Chậm '+(-diff)+' bài</span>'}</span></div><div class="bar"><i style="width:${done/54*100}%"></i></div>`;
+}
+$("books").addEventListener("click",e=>{const b=e.target.closest(".ls");if(!b)return;const k=b.dataset.k;if(state.lessons[k])delete state.lessons[k];else state.lessons[k]=true;save();renderIrodori();});
+
+// ---------- KANA ----------
+let kq=null,answered=false;
+function nextKana(){const s=$("kset").value,pool=KANA.filter(k=>s.includes(k.s));kq=pool[Math.floor(Math.random()*pool.length)];answered=false;
+  const rs=new Set([kq.r]),all=[...new Set(KANA.map(k=>k.r))];while(rs.size<4)rs.add(all[Math.floor(Math.random()*all.length)]);
+  $("kq").textContent=kq.c;$("opts").innerHTML=shuffle([...rs]).map(o=>`<button class="btn" data-r="${o}">${o}</button>`).join("");
+  const sc=state.kana;$("kscore").textContent=sc.total?`Đúng ${sc.right}/${sc.total} (${Math.round(sc.right/sc.total*100)}%)`:"";}
+$("opts").addEventListener("click",e=>{const b=e.target.closest("[data-r]");if(!b||answered)return;answered=true;const ok=b.dataset.r===kq.r;state.kana.total++;if(ok)state.kana.right++;save();
+  b.classList.add(ok?"right":"wrong");if(!ok)$("opts").querySelector(`[data-r="${kq.r}"]`).classList.add("right");speak(kq.c);setTimeout(nextKana,ok?600:1300);});
+$("kset").addEventListener("change",nextKana);
+function renderKanaTable(){const src=$("ktab").value==="h"?HIRA:KATA;$("kanaTable").innerHTML=KANA_ROWS.flat().map((r,i)=>r?`<span>${src[i]}<small>${r}</small></span>`:`<span class="blank2"></span>`).join("");}
+$("ktab").addEventListener("change",renderKanaTable);
+
+// ---------- ROUTER ----------
+const VIEWS=["hom-nay","lo-trinh","the-tu","ngu-phap","kanji","irodori","kana"];
+function route(){
+  let h=(location.hash||"").slice(1),wk=0;
+  const m=/^tuan-(\d{1,2})$/.exec(h);if(m&&+m[1]>=1&&+m[1]<=32){wk=+m[1];h="lo-trinh";}
+  const v=VIEWS.includes(h)?h:"hom-nay";
+  VIEWS.forEach(x=>{$("v-"+x).hidden=x!==v;});
+  document.querySelectorAll("nav.tabs a").forEach(a=>{if(a.getAttribute("href")==="#"+v)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current");});
+  if(v==="hom-nay")renderToday();
+  if(v==="lo-trinh"){$("weeksList").hidden=!!wk;$("weekDetail").hidden=!wk;if(wk){renderWeek(wk);window.scrollTo(0,0);}else renderWeeks();}
+  if(v==="the-tu"){if(pendingDeck){deckSel.value=pendingDeck;pendingDeck=null;vT.draw();}else vT.info();}
+  if(v==="kanji")kT.info();
+  if(v==="ngu-phap")renderGrammar();
+  if(v==="irodori")renderIrodori();
+}
+function rerender(){vT.draw();kT.draw();route();}
+window.addEventListener("hashchange",route);
+$("days").textContent=Math.max(0,Math.round((EXAM-today())/DAY));
+vT.draw();kT.draw();nextKana();renderKanaTable();route();
+})();
+</script>
+
+</body>
+</html>
